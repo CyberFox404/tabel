@@ -20,11 +20,9 @@ month_days = {
 }
 
 
-def if_leap_year(
-    year  # type: int
-):
-    if (year % 4) == 0:
-        if (year % 100) == 0 and (year % 400) != 0:
+def if_leap_year(ayear):
+    if (ayear % 4) == 0:
+        if (year % 100) == 0 and (ayear % 400) != 0:
             month_days[2] = 28
             return 0
         month_days[2] = 29
@@ -66,18 +64,13 @@ for table in code_table:
 
     if (num_table + 2) % 2 == 0:
 
-        # print("*** таблица ***")
-        # print(num_table)
-        # print("*************************** ")
         print("таблица %d\n" % num_table)
         code_tr = table.findAll('tr')
 
         for tr in code_tr:
-            # print("*** строка ***")
-            # print(num_tr)
 
             print("строка %d\n" % num_tr)
-            # print("*************************** ")
+
             if num_tr == 0:
                 print("пропуск строки %d\n" % num_tr)
                 num_tr += 1
@@ -88,9 +81,6 @@ for table in code_table:
 
                 if_holiday = False
 
-                # print("*** ячейка ***")
-                # print(num_td)
-                # print("*************************** ")
                 td_text = td.text.strip()
                 td_clean_text = td_text.replace("*", "").replace("'", "")
 
@@ -101,18 +91,12 @@ for table in code_table:
                     if num_td == 0:
                         print("пропуск столбца %d / %s" % (num_td, td_text))
                         num_td += 1
-                        # print("пропуск строки")
-
                         continue
-
-                    # isinstance(50, list)
 
                     if "/" in td_clean_text:
                         day_arr = 1
-                        # daya = td_clean_text.split('/')
                         daya = list(map(int, td_clean_text.split('/')))
                         day = daya[0]
-
                     else:
                         day = int(td_clean_text)
 
@@ -122,19 +106,10 @@ for table in code_table:
                             month_num = month_min
                         print()
 
-                    # print("$$$")
-                    # print(month_num)
-                    # print("$$$")
-                    # print(td.text.strip())
-                    # print("@@@")
-
                     print("month_num %d" % month_num)
                     print("td.text.strip() %s" % td_text)
 
                     if len(arr) < month_num:
-                        # print("111")
-                        # print(len(arr))
-                        # print(month_num)
                         arr[month_num] = {}
 
                     if 'workday' not in arr[month_num].keys():
