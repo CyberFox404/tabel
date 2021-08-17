@@ -1,21 +1,9 @@
+# pip install ipython-beautifulsoup
+
 import requests
 import re
 from bs4 import BeautifulSoup
 
-"""
-x = {
-  "name": "John",
-  "age": 30,
-  "married": True,
-  "divorced": False,
-  "children": ("Ann","Billy"),
-  "pets": None,
-  "months": [
-    {1: "BMW 230", "mpg": 27.5},
-    {2": "Ford Edge", "mpg": 24.1}
-  ]
-}
-"""
 month_days = {
     1: 31,
     2: 28,
@@ -33,9 +21,8 @@ month_days = {
 
 
 def if_leap_year(
-        year  # type: int
+    year  # type: int
 ):
-    # print(month_days)
     if (year % 4) == 0:
         if (year % 100) == 0 and (year % 400) != 0:
             month_days[2] = 28
@@ -47,12 +34,6 @@ def if_leap_year(
     return 0
 
 
-"""
-<meta property="og:title" content="Производственный календарь 2021" />
-<meta property="og:url" content="http://www.garant.ru/calendar/buhpravo/" />
-<meta property="og:description" content="Производственный календарь 2021. Распечатать, скачать." />
-"""
-
 # Получение исходного кода производственного календаря
 calendar_url = "http://www.garant.ru/calendar/buhpravo/"
 page = requests.get(calendar_url)
@@ -61,7 +42,7 @@ soup = BeautifulSoup(page.text)
 # получить год календаря
 meta_title = soup.find("meta", {"property": "og:title"})
 year = int(re.findall(r'\d+', meta_title["content"])[0])
-print("год %d\n" % (year))
+print("год %d\n" % year)
 
 # проверка года на високосность
 print("проверка года на високосность %d\n" % (if_leap_year(year)))
@@ -69,10 +50,7 @@ print("проверка года на високосность %d\n" % (if_leap_
 # Получение только необходимого куска кода
 code_content = soup.find('div', {'class': 'page-content'})
 
-# --------------------------------------------------------
 # Получение всех тегов таблиц
-# --------------------------------------------------------
-
 code_table = code_content.findAll('table', {'class': 'tabCalendar'})
 num_table = 0
 num_tr = 0
@@ -91,17 +69,17 @@ for table in code_table:
         # print("*** таблица ***")
         # print(num_table)
         # print("*************************** ")
-        print("таблица %d\n" % (num_table))
+        print("таблица %d\n" % num_table)
         code_tr = table.findAll('tr')
 
         for tr in code_tr:
             # print("*** строка ***")
             # print(num_tr)
 
-            print("строка %d\n" % (num_tr))
+            print("строка %d\n" % num_tr)
             # print("*************************** ")
             if num_tr == 0:
-                print("пропуск строки %d\n" % (num_tr))
+                print("пропуск строки %d\n" % num_tr)
                 num_tr += 1
                 continue
             code_td = tr.findAll('td')
@@ -135,13 +113,13 @@ for table in code_table:
                         daya = list(map(int, td_clean_text.split('/')))
                         day = daya[0]
 
-
                     else:
                         day = int(td_clean_text)
 
                     if day < last_date:
                         month_num += 1
-                        if month_num > month_num_count: month_num = month_min
+                        if month_num > month_num_count:
+                            month_num = month_min
                         print()
 
                     # print("$$$")
@@ -150,8 +128,8 @@ for table in code_table:
                     # print(td.text.strip())
                     # print("@@@")
 
-                    print("month_num %d" % (month_num))
-                    print("td.text.strip() %s" % (td_text))
+                    print("month_num %d" % month_num)
+                    print("td.text.strip() %s" % td_text)
 
                     if len(arr) < month_num:
                         # print("111")
@@ -159,34 +137,21 @@ for table in code_table:
                         # print(month_num)
                         arr[month_num] = {}
 
-                    if not 'workday' in arr[month_num].keys():
-                        print("not workday in %d" % (month_num))
+                    if 'workday' not in arr[month_num].keys():
+                        print("not workday in %d" % month_num)
                         arr[month_num]['workday'] = []
 
-                    if not 'deworkday' in arr[month_num].keys():
-                        print("not deworkday in %d" % (month_num))
+                    if 'deworkday' not in arr[month_num].keys():
+                        print("not deworkday in %d" % month_num)
                         arr[month_num]['deworkday'] = []
 
-                    if not 'shortday' in arr[month_num].keys():
-                        print("not shortday in %d" % (month_num))
+                    if 'shortday' not in arr[month_num].keys():
+                        print("not shortday in %d" % month_num)
                         arr[month_num]['shortday'] = []
 
-                    # print(arr[month_num].keys())
-                    # print('holiday' in arr[month_num].keys())
-
-                    if not 'holiday' in arr[month_num].keys():
-                        # if arr[month_num].get('holiday') == None:
-                        print("not holiday in %d" % (month_num))
-                        # print("======")
-                        # print(month_num)
-                        # print(arr)
-                        # print(arr[month_num])
+                    if 'holiday' not in arr[month_num].keys():
+                        print("not holiday in %d" % month_num)
                         arr[month_num]['holiday'] = []
-                        # print(arr[month_num])
-                        # print(arr)
-                        # print("!!!!!!")
-                    # print(arr[month_num].keys())
-                    # print('holiday' in arr[month_num].keys())
 
                     # проверка даты на выходной день
                     if_holiday = td.find('span')
@@ -195,17 +160,9 @@ for table in code_table:
                         if "color: rgb(255, 0, 0)" in td['style']:
                             if_holiday = True
 
-                    # if len(arr) < num_td + 1:
-                    #    arr.append([])
-
-                    ###arr[n].append([i])
-
-                    """
-                    Сортируем дни на выходные, праздничные, сокращенные и рабочие
-                    """
+                    # Сортируем дни на выходные, праздничные, сокращенные и рабочие
                     if "'" in td_text:
-                        # print("is_not_work")
-                        print("deworkday %d" % (day))
+                        print("deworkday %d" % day)
 
                         if day_arr == 1:
                             for t in range(len(daya)):
@@ -217,7 +174,7 @@ for table in code_table:
 
                     elif "*" in td_text:
                         # print("is_short")
-                        print("shortday %d" % (day))
+                        print("shortday %d" % day)
                         if day_arr == 1:
                             for t in range(len(daya)):
                                 arr[month_num]['shortday'].append(t)
@@ -229,7 +186,7 @@ for table in code_table:
                     elif if_holiday:
                         # print("is_holiday")
                         # print(arr)
-                        print("holiday %d" % (day))
+                        print("holiday %d" % day)
                         if day_arr == 1:
                             for t in range(len(daya)):
                                 arr[month_num]['holiday'].append(t)
@@ -241,7 +198,7 @@ for table in code_table:
                     elif tr.has_attr('class'):
                         if tr['class'][0] == 'redDay':  # Notice that I put [0], as para['class'] is a list.
                             # print("is_holiday")
-                            print("holiday %d" % (day))
+                            print("holiday %d" % day)
                             if day_arr == 1:
                                 for t in range(len(daya)):
                                     arr[month_num]['holiday'].append(t)
@@ -251,7 +208,7 @@ for table in code_table:
                             arr[month_num]['holiday'].sort()
 
                     else:
-                        print("work day %d" % (day))
+                        print("work day %d" % day)
                         if day_arr == 1:
                             for t in range(len(daya)):
                                 arr[month_num]['workday'].append(t)
@@ -294,4 +251,3 @@ for u in range(1, len(arr) + 1):
     arr[u]['work_24'] = round(len(arr[u]['workday']) * 4.8 + len(arr[u]['shortday']) * 3.8, 1)
 
 print(arr)
-
