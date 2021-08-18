@@ -4,13 +4,6 @@ import requests
 import re
 from bs4 import BeautifulSoup
 
-from lib.cycle_stepper import cycle_stepper
-
-
-cs = cycle_stepper(1, 3)
-
-
-
 month_days = {
     1: 31,
     2: 28,
@@ -42,7 +35,7 @@ def if_leap_year(ayear):
 # Получение исходного кода производственного календаря
 calendar_url = "http://www.garant.ru/calendar/buhpravo/"
 page = requests.get(calendar_url)
-soup = BeautifulSoup(page.text, "html.parser")
+soup = BeautifulSoup(page.text)
 
 # получить год календаря
 meta_title = soup.find("meta", {"property": "og:title"})
@@ -62,9 +55,9 @@ num_tr = 0
 num_td = 0
 last_date = 0
 arr = {}
-#month_num = 1
-#month_min = 1
-#month_num_count = 3
+month_num = 1
+month_min = 1
+month_num_count = 3
 day_arr = 0
 
 for table in code_table:
@@ -108,34 +101,32 @@ for table in code_table:
                         day = int(td_clean_text)
 
                     if day < last_date:
-                        #month_num += 1
-                        #if month_num > month_num_count:
-                        #    month_num = month_min
-                        cs.step()
-                        #cs.nextgroup()
+                        month_num += 1
+                        if month_num > month_num_count:
+                            month_num = month_min
                         print()
 
-                    print("month_num %d" % cs.check())
+                    print("month_num %d" % month_num)
                     print("td.text.strip() %s" % td_text)
 
-                    if len(arr) < cs.check():
-                        arr[cs.check()] = {}
+                    if len(arr) < month_num:
+                        arr[month_num] = {}
 
-                    if 'workday' not in arr[cs.check()].keys():
-                        print("not workday in %d" % cs.check())
-                        arr[cs.check()]['workday'] = []
+                    if 'workday' not in arr[month_num].keys():
+                        print("not workday in %d" % month_num)
+                        arr[month_num]['workday'] = []
 
-                    if 'deworkday' not in arr[cs.check()].keys():
-                        print("not deworkday in %d" % cs.check())
-                        arr[cs.check()]['deworkday'] = []
+                    if 'deworkday' not in arr[month_num].keys():
+                        print("not deworkday in %d" % month_num)
+                        arr[month_num]['deworkday'] = []
 
-                    if 'shortday' not in arr[cs.check()].keys():
-                        print("not shortday in %d" % cs.check())
-                        arr[cs.check()]['shortday'] = []
+                    if 'shortday' not in arr[month_num].keys():
+                        print("not shortday in %d" % month_num)
+                        arr[month_num]['shortday'] = []
 
-                    if 'holiday' not in arr[cs.check()].keys():
-                        print("not holiday in %d" % cs.check())
-                        arr[cs.check()]['holiday'] = []
+                    if 'holiday' not in arr[month_num].keys():
+                        print("not holiday in %d" % month_num)
+                        arr[month_num]['holiday'] = []
 
                     # проверка даты на выходной день
                     if_holiday = td.find('span')
@@ -150,22 +141,22 @@ for table in code_table:
 
                         if day_arr == 1:
                             for t in range(len(daya)):
-                                arr[cs.check()]['deworkday'].append(t)
+                                arr[month_num]['deworkday'].append(t)
                         else:
-                            arr[cs.check()]['deworkday'].append(day)
+                            arr[month_num]['deworkday'].append(day)
 
-                        arr[cs.check()]['deworkday'].sort()
+                        arr[month_num]['deworkday'].sort()
 
                     elif "*" in td_text:
                         # print("is_short")
                         print("shortday %d" % day)
                         if day_arr == 1:
                             for t in range(len(daya)):
-                                arr[cs.check()]['shortday'].append(t)
+                                arr[month_num]['shortday'].append(t)
                         else:
-                            arr[cs.check()]['shortday'].append(day)
+                            arr[month_num]['shortday'].append(day)
 
-                        arr[cs.check()]['shortday'].sort()
+                        arr[month_num]['shortday'].sort()
 
                     elif if_holiday:
                         # print("is_holiday")
@@ -173,11 +164,11 @@ for table in code_table:
                         print("holiday %d" % day)
                         if day_arr == 1:
                             for t in range(len(daya)):
-                                arr[cs.check()]['holiday'].append(t)
+                                arr[month_num]['holiday'].append(t)
                         else:
-                            arr[cs.check()]['holiday'].append(day)
+                            arr[month_num]['holiday'].append(day)
 
-                        arr[cs.check()]['holiday'].sort()
+                        arr[month_num]['holiday'].sort()
 
                     elif tr.has_attr('class'):
                         if tr['class'][0] == 'redDay':  # Notice that I put [0], as para['class'] is a list.
@@ -185,21 +176,21 @@ for table in code_table:
                             print("holiday %d" % day)
                             if day_arr == 1:
                                 for t in range(len(daya)):
-                                    arr[cs.check()]['holiday'].append(t)
+                                    arr[month_num]['holiday'].append(t)
                             else:
-                                arr[cs.check()]['holiday'].append(day)
+                                arr[month_num]['holiday'].append(day)
 
-                            arr[cs.check()]['holiday'].sort()
+                            arr[month_num]['holiday'].sort()
 
                     else:
                         print("work day %d" % day)
                         if day_arr == 1:
                             for t in range(len(daya)):
-                                arr[cs.check()]['workday'].append(t)
+                                arr[month_num]['workday'].append(t)
                         else:
-                            arr[cs.check()]['workday'].append(day)
+                            arr[month_num]['workday'].append(day)
 
-                        arr[cs.check()]['workday'].sort()
+                        arr[month_num]['workday'].sort()
 
                     print(arr)
 
@@ -219,9 +210,8 @@ for table in code_table:
         num_tr = 0
         # break
 
-        #month_min = month_min + month_num_count
-        #month_num = month_min
-        cs.nextgroup()
+        month_min = month_min + month_num_count
+        month_num = month_min
         # month_min = 1
         # month_num_count = 3
 
