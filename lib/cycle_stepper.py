@@ -1,3 +1,12 @@
+'''
+
+from lib.cycle_stepper import cycle_stepper
+
+cs = cycle_stepper(1, 3)
+
+'''
+
+
 class cycle_stepper:
 
     def __init__(self, min, group):
