@@ -1,10 +1,9 @@
 # pip install ipython-beautifulsoup
 
-if __name__ == "__main__":
-    import json
-    import requests
-    import re
-    from bs4 import BeautifulSoup
+import json
+import requests
+import re
+from bs4 import BeautifulSoup
 
 month_days = {
     0: 31,
