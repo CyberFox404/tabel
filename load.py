@@ -6,15 +6,49 @@
 #print(dict)
 #print(json.dumps(dict))
 
+import requests
+import json
+import requests
+import re
+from bs4 import BeautifulSoup
 
-https://raw.githubusercontent.com/CyberFox404/tabel/main/main.py?token=ABY4NHTZ4LFN5TBK6Q73QFLBEIMNM
+target_url = "https://raw.githubusercontent.com/CyberFox404/tabel/main/main.py"
+r = requests.get(target_url, allow_redirects=True)
+
+open('tabel_calendar_2021_load.py', 'wb').write(r.content)
 
 
-import urllib
-content=urllib.request.urlopen("https://wordpress.org/plugins/about/readme.txt")
+f = open("tabel_calendar_2021_load.py", "r")
+print(eval(f.read()))
+
+exit()
+
+
+
+try:
+    import urllib.request as urllib2
+except ImportError:
+    import urllib2
+
+content = urllib2.urlopen(target_url)
+
+
+print(content)
+print()
+
 for line in content:
     print (line)
+#content=urllib.request.urlopen("https://raw.githubusercontent.com/CyberFox404/tabel/main/main.py")
+
+#import urllib.request  # the lib that handles the url stuff
 
 
-f = open("main.py", "r")
-print(eval(f.read()))
+#content=urllib.urlopen(url)
+#print(content)
+#print()
+#for line in content:
+#    print (line)
+
+
+#f = open("main.py", "r")
+#print(eval(f.read()))
