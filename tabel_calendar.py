@@ -1,4 +1,7 @@
-# pip install ipython-beautifulsoup
+#!/usr/local/bin/python
+# -*- coding: utf-8 -*-
+
+pip install ipython-beautifulsoup
 
 import json
 import requests
