@@ -1,12 +1,12 @@
-#!/usr/local/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import requests
 import os
 
 file_name_exec = "tabel_calendar_2021_load.py"
-# target_url = "https://raw.githubusercontent.com/CyberFox404/tabel_calendar/main/main.py"
-target_url = "https://raw.githubusercontent.com/CyberFox404/tabel/main/main.py"
+# target_url = "https://raw.githubusercontent.com/CyberFox404/tabel_calendar/main/tabel_calendar.py"
+target_url = "https://raw.githubusercontent.com/CyberFox404/tabel/main/tabel_calendar.py"
 
 r = requests.get(target_url, allow_redirects=True)
 
