@@ -7,5 +7,14 @@
 #print(json.dumps(dict))
 
 
+https://raw.githubusercontent.com/CyberFox404/tabel/main/main.py?token=ABY4NHTZ4LFN5TBK6Q73QFLBEIMNM
+
+
+import urllib
+content=urllib.request.urlopen("https://wordpress.org/plugins/about/readme.txt")
+for line in content:
+    print (line)
+
+
 f = open("main.py", "r")
 print(eval(f.read()))
