@@ -5,8 +5,7 @@ import re
 from bs4 import BeautifulSoup
 
 file_name_exec = "tabel_calendar_2021_load.py"
-# target_url = "https://raw.githubusercontent.com/CyberFox404/tabel_calendar/main/tabel_calendar.py"
-target_url = "https://raw.githubusercontent.com/CyberFox404/tabel/main/tabel_calendar.py"
+target_url = "https://raw.githubusercontent.com/CyberFox404/tabel_calendar/main/tabel_calendar.py"
 
 r = requests.get(target_url, allow_redirects=True)
 
